@@ -6,8 +6,8 @@
 <body>
 
   <div id="app">
-    <form action='done.html' v-on:submit.prevent="handleIt">
-      <button type="submit">Click Me!</button>
+    <form action='done.html' @submit.prevent="handleSubmit">
+      <button type="submit" @click="handleClick">Click Me!</button>
     </form>
   </div>
 
@@ -19,8 +19,11 @@
       data: {
       },
       methods: {
-        handleIt: function() {
-          alert("handleIt~!")
+        handleSubmit: function() {
+          alert("handleSubmit~!")
+        },
+        handleClick: function() {
+          alert("handleClick~!")
         }
       }
     })
