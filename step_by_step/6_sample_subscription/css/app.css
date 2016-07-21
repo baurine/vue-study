@@ -1,0 +1,8 @@
+.plan {
+  padding: 10px;
+}
+
+.plan-name, .plan-price {
+  display: inline-block;
+  width: 6em;
+}

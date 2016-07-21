@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vue Hello</title>
+  <link rel="stylesheet" type="text/css" href="css/app.css">
+</head>
+<body>
+
+  <div id="app">
+    <pre>{{ $data | json }}</pre>
+    
+    <div class="plan" v-for="plan in plans">
+      <plan :plan="plan" :active.sync="active">
+    </div>
+  </div>
+
+  <template id="plan-template">
+    <span class="plan-name">{{ plan.name }}</span>
+    <span class="plan-price">${{ plan.price }}/month</span>
+
+    <span v-show="isActive">
+      Current Plan
+    </span>
+    <span v-else>
+      <button @click="subscribePlan">
+        {{ isUpgrade ? "Upgrade" : "Downgrade" }}
+      </button>
+    </span>
+
+  </template>
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.js"></script>
+
+  <script>
+    new Vue({
+      el: "#app",
+
+      data: {
+        plans: [
+          {name: 'Enterprise', price: 100},
+          {name: 'Professional', price: 50},
+          {name: 'Starter', price: 25},
+          {name: 'free', price: 0},
+        ],
+        active: { }
+      },
+
+      components: {
+        plan: {
+          template: '#plan-template',
+
+          props: ['plan', 'active'],
+
+          computed: {
+            isActive: function() {
+              return this.plan.name === this.active.name
+            },
+
+            isUpgrade: function() {
+              if (this.active.price) {
+                return this.plan.price > this.active.price
+              }
+              return true
+            }
+          },
+
+          methods: {
+            subscribePlan: function() {
+              this.active = this.plan
+            }
+          }
+        }
+      }
+    })
+  </script>
+
+</body>
+</html>
