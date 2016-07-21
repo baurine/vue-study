@@ -19,7 +19,8 @@
       data: {
       },
       methods: {
-        handleIt: function() {
+        handleIt: function(e) {
+          e.preventDefault()
           alert("handleIt~!")
         }
       }
