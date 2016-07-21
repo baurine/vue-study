@@ -6,7 +6,7 @@
 <body>
 
   <div id="app">
-    <button type="submit" @click="incCounter">
+    <button type="submit" @click="count += 1">
       click times: {{ count }}
     </button>
   </div>
@@ -20,9 +20,6 @@
         count: 0
       },
       methods: {
-        incCounter: function() {
-          this.count += 1
-        }
       }
     })
   </script>
