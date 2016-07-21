@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vue Hello</title>
+</head>
+<body>
+
+  <div id="app">
+    <h1>Skill: {{ level }}</h1>
+    <input v-model='skill'>
+
+    <br />
+  </div>
+
+  <div id="names">
+    <h1>{{ fullName }}</h1>
+    <input type="text" v-model="first" placeholder="firstName">
+    <input type="text" v-model="last" placeholder="lastName">
+  </div>
+
+  <div id="names_2">
+    <h1>{{ fullName }}</h1>
+    <input type="text" v-model="first" placeholder="firstName">
+    <input type="text" v-model="last" placeholder="lastName">
+  </div>
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.js"></script>
+
+  <script>
+
+    new Vue({
+      el: '#app',
+      data: {
+        skill: 50
+      },
+      computed: {
+        level: function() {
+          if (this.skill < 100) {
+            return 'Beginer'
+          }
+          return 'Advanced'
+        }
+      }
+    })
+
+    new Vue({
+      el: '#names',
+      data: {
+        first: 'Baurine',
+        last: 'Huang',
+        fullName: 'Huang Baurine'
+      },
+      watch: {
+        first: function() {
+          this.fullName = this.first + ' ' + this.last
+        },
+        last: function() {
+          this.fullName = this.first + ' ' + this.last
+        }
+      }
+    })
+
+    new Vue({
+      el: '#names_2',
+      data: {
+        first: 'Bao',
+        last: 'Spark',
+      },
+      computed: {
+        fullName: function() {
+          return this.first + ' ' + this.last
+        }
+      }
+    })
+
+  </script>
+
+</body>
+</html>
