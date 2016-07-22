@@ -2,38 +2,33 @@
 <html>
 <head>
   <title>Vue Hello</title>
-  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 </head>
 <body>
 
   <div id="app">
-    <tasks :list="tasks">
+    <tasks></tasks>
   </div>
 
   <template id="tasks-template">
     <h1>
       My Tasks
-      <span v-show="remaining">({{ remaining }})</span>
     </h1>
 
-    <ul v-show="list.length">
-      <li v-for="task in list" 
-          :class="{ 'completed': task.completed }"
-          @click="toggleTask(task)">
+    <ul class="list-group">
+      <li v-for="task in list" class="list-group-item">
         {{ task.body }}
 
-        <strong @click="deleteTask(task)">x</strong>
+        <strong @click="delete(task)">X</strong>
       </li>
     </ul>
 
-    <p v-else>No tasks</p>
-
-    <button @click="clearCompleted">clear completed</button>
-
   </template>
 
+  <script src="http://code.jquery.com/jquery.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.js"></script>
-  <script type="text/javascript" src="js/main.js"></script>
+  <script src="js/main.js"></script>
 
 </body>
 </html>
