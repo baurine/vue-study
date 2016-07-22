@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vue Hello</title>
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+
+  <div id="app">
+    <tasks :list="tasks">
+  </div>
+
+  <template id="tasks-template">
+    <ul>
+      <li v-for="task in list" 
+          :class="{ 'completed': task.completed }"
+          @click="toggleTask(task)">
+        {{ task.body }}
+      </li>
+    </ul>
+  </template>
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+
+</body>
+</html>
