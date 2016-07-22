@@ -1,0 +1,17 @@
+[
+  {
+    "id" : 1,
+    "body": "Go to office",
+    "completed": false
+  },
+  {
+    "id" : 2,
+    "body": "Go to bank",
+    "completed": false
+  },
+  {
+    "id" : 3,
+    "body": "Call somebody",
+    "completed": true
+  }
+]
