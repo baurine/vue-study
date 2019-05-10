@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <router-view />
+    <router-view/>
   </div>
 </template>
 
 <style lang="scss">
-@import "@/global-styles/colors.scss";
-@import "@/global-styles/typography.scss";
-
 body {
-  background: $dark-blue;
+  margin: 0;
+  padding: 0;
+
+  // background: $dark-blue;
 
   h1 {
     @include heading-1;
