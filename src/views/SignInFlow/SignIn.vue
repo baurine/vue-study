@@ -1,9 +1,6 @@
 <template>
   <div class="container" :class="{'light-background': !isDarkMode, 'dark-background': isDarkMode}">
-    <div class="request" :class="{'light-request': isDarkMode, 'dark-request': !isDarkMode}">
-      Don't have a Design+Code HQ account?&nbsp;
-      <router-link to="/request">Request an account</router-link>
-    </div>
+    <RequestAccount/>
     <div class="login">
       <img src="@/assets/DCHQ.svg" v-if="!isDarkMode">
       <img src="@/assets/DCHQ-dark.svg" v-if="isDarkMode">
@@ -23,22 +20,24 @@
         to="/recover"
         :class="{'light-link': isDarkMode, 'dark-link': !isDarkMode}"
       >Forgot your password?</router-link>
-      <button @click="toggleDarkMode">Toggle</button>
+      <ThemeSwitch/>
     </div>
   </div>
 </template>
 
 <script>
+import RequestAccount from "@/components/RequestAccount";
+import ThemeSwitch from "@/components/ThemeSwitch";
+
 export default {
   name: "SignIn",
+  components: {
+    RequestAccount,
+    ThemeSwitch
+  },
   computed: {
     isDarkMode() {
       return this.$store.getters.isDarkMode;
-    }
-  },
-  methods: {
-    toggleDarkMode() {
-      this.$store.commit("toggleDarkMode");
     }
   }
 };
@@ -52,36 +51,9 @@ export default {
 
   min-height: 100vh;
 }
-
-.light-background {
-  background: $light-gray;
-}
-.dark-background {
-  background: $dark-blue;
-}
-
-.request {
-  position: absolute;
-  right: 40px;
-  top: 40px;
-}
-.light-request {
-  color: rgba(255, 255, 255, 0.3);
-
-  a {
-    color: white;
-  }
-}
-.dark-request {
-  color: rgba(0, 0, 0, 0.3);
-
-  a {
-    color: black;
-  }
-}
-
 .login {
   width: 400px;
+  text-align: center;
 }
 
 h4 {
@@ -89,12 +61,6 @@ h4 {
   line-height: 34px;
   font-size: 24px;
   text-align: center;
-}
-.light-text {
-  color: white;
-}
-.dark-text {
-  color: black;
 }
 
 input {
@@ -106,22 +72,6 @@ input {
   box-sizing: border-box;
   margin-top: 20px;
   outline: none;
-}
-.ligth-field {
-  color: white;
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  &::placeholder {
-    color: rgba(255, 255, 255, 0.3);
-  }
-}
-.dark-field {
-  color: black;
-  background: rgba(198, 208, 235, 0.2);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  &::placeholder {
-    color: rgba(0, 0, 0, 0.3);
-  }
 }
 
 button {
@@ -141,13 +91,7 @@ a {
   line-height: 25px;
   font-size: 16px;
   text-align: center;
-  color: rgba(255, 255, 255, 0.3);
+  // color: rgba(255, 255, 255, 0.3);
   text-decoration: none;
-}
-.light-link {
-  color: rgba(255, 255, 255, 0.3);
-}
-.dark-link {
-  color: rgba(0, 0, 0, 0.3);
 }
 </style>
