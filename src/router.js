@@ -56,7 +56,13 @@ router.beforeEach((to, from, next) => {
   const requireAuth = to.matched.some(record => record.meta.requireAuth);
   const currentUser = window.localStorage.getItem("cur_user");
   if (requireAuth && !currentUser) {
-    next("signin");
+    // next("signin");
+    next({
+      name: "signin",
+      params: {
+        userNeedLogin: true
+      }
+    });
   } else {
     next();
   }

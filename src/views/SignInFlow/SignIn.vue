@@ -58,6 +58,17 @@ export default {
     if (params.userLoggedOut) {
       this.hasText = true;
       this.text = "You have logged out!";
+    } else if (params.userRequestAccount) {
+      this.hasText = true;
+      this.text = `Your request has been sent to administator for ${
+        params.email
+      }`;
+    } else if (params.userRecoverAccount) {
+      this.hasText = true;
+      this.text = `A recovery email has sent to ${params.email}`;
+    } else if (params.userNeedLogin) {
+      this.hasText = true;
+      this.text = `Please login first`;
     }
   },
   computed: {
@@ -122,7 +133,6 @@ a {
   line-height: 25px;
   font-size: 16px;
   text-align: center;
-  // color: rgba(255, 255, 255, 0.3);
   text-decoration: none;
 }
 </style>
