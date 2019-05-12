@@ -9,14 +9,17 @@ import Recover from "./views/SignInFlow/Recover";
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [
     {
       path: "/",
       name: "home",
-      component: Home
+      component: Home,
+      meta: {
+        requireAuth: true
+      }
     },
     {
       path: "/about",
@@ -26,11 +29,14 @@ export default new Router({
     {
       path: "/team",
       name: "team",
-      component: Team
+      component: Team,
+      meta: {
+        requireAuth: true
+      }
     },
     {
       path: "/signin",
-      name: "sigin",
+      name: "signin",
       component: SignIn
     },
     {
@@ -45,3 +51,15 @@ export default new Router({
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  const requireAuth = to.matched.some(record => record.meta.requireAuth);
+  const currentUser = window.localStorage.getItem("cur_user");
+  if (requireAuth && !currentUser) {
+    next("signin");
+  } else {
+    next();
+  }
+});
+
+export default router;

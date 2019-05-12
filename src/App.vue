@@ -20,7 +20,7 @@ body {
   margin: 0;
   padding: 0;
 
-  // background: $dark-blue;
+  background: $dark-blue;
 
   h1 {
     @include heading-1;
