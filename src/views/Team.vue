@@ -1,5 +1,6 @@
 <template>
   <div class="container" :class="{'light-background': !isDarkMode, 'dark-background': isDarkMode}">
+    <Header/>
     <h2 :class="{'light-text': isDarkMode, 'dark-text': !isDarkMode}">Team</h2>
     <div class="cards">
       <transition
@@ -26,6 +27,8 @@
 </template>
 
 <script>
+import Header from "@/components/Header.vue";
+
 import slack_img from "@/assets/slack.png";
 import notion_img from "@/assets/notion.png";
 import figma_img from "@/assets/figma.png";
@@ -34,6 +37,9 @@ import dropbox_img from "@/assets/dropbox.png";
 
 export default {
   name: "Team",
+  components: {
+    Header
+  },
   data() {
     return {
       members: [

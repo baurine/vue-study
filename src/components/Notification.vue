@@ -11,7 +11,7 @@ import { setTimeout } from "timers";
 export default {
   name: "Notification",
   props: {
-    text: ""
+    text: String
   },
   data() {
     return {
