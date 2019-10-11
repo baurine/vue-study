@@ -4,6 +4,7 @@
 
 1. [Vue Study Note](./note/vue-study-note.md)
 1. [Design+Code Vue Note](./vue-admin-dashboard/notes/vue-note.md)
+1. [Vue Misc](./note/vue-misc.md)
 
 ## Samples
 
