@@ -342,6 +342,7 @@ const { x, y } = useMousePosition()
 
 - [抄笔记：尤雨溪在 Vue3.0 Beta 直播里聊到了这些](https://juejin.im/post/5e9f6b3251882573a855cd52)
 - [Vue3 究竟好在哪里？（和 React Hook 的详细对比）](https://zhuanlan.zhihu.com/p/133819602)
+- [Vue3.0 语法快速入门](https://mp.weixin.qq.com/s/TLaSLxQ0iJ6BD0cPO8ne5g)
 
 Highlights:
 
