@@ -1,4 +1,4 @@
-# Vue Misc
+# Vue 3
 
 ## Vue Function-based API RFC
 
@@ -13,6 +13,8 @@ Vue Composition API 将会是 Vue 3.0 最重要的特性。
 
 react 和 vue 的相继改变体现了用 "组合替代继承" 来实现复用。
 
+(Go 和 Rust 也是用组合替代继承)
+
 示例代码：
 
 ```js
@@ -21,7 +23,7 @@ react 和 vue 的相继改变体现了用 "组合替代继承" 来实现复用�
 function useMouse() {
   const x = value(0)
   const y = value(0)
-  const update = e => {
+  const update = (e) => {
     x.value = e.pageX
     y.value = e.pageY
   }
@@ -42,7 +44,7 @@ const Component = {
     const { z } = useOtherLogic()
     return { x, y, z }
   },
-  template: `<div>{{ x }} {{ y }} {{ z }}</div>`
+  template: `<div>{{ x }} {{ y }} {{ z }}</div>`,
 }
 ```
 
@@ -77,7 +79,7 @@ const App = {
     // watch
     watch(
       () => count.value * 2,
-      val => {
+      (val) => {
         console.log(`count * 2 is ${val}`)
       }
     )
@@ -89,9 +91,9 @@ const App = {
     return {
       count,
       plusOne,
-      increment
+      increment,
     }
-  }
+  },
 }
 ```
 
@@ -109,14 +111,14 @@ setup() 是组件用于放置组件逻辑的地方 (所以它只能在 component
 ```js
 const MyComponent = {
   props: {
-    name: String
+    name: String,
   },
   setup(props) {
     return {
-      msg: `hello ${props.name}!`
+      msg: `hello ${props.name}!`,
     }
   },
-  template: `<div>{{ msg }}</div>`
+  template: `<div>{{ msg }}</div>`,
 }
 ```
 
@@ -133,10 +135,10 @@ const MyComponent = {
     }
     return {
       msg,
-      appendName
+      appendName,
     }
   },
-  template: `<div @click="appendName">{{ msg }}</div>`
+  template: `<div @click="appendName">{{ msg }}</div>`,
 }
 ```
 
@@ -150,7 +152,7 @@ value() 返回的是一个 value wrapper（包装对象）。一个包装对象�
 import { state } from 'vue'
 
 const object = state({
-  count: 0
+  count: 0,
 })
 
 object.count++
@@ -196,20 +198,20 @@ count.value++
 ```js
 const MyComponent = {
   props: {
-    id: Number
+    id: Number,
   },
   setup(props) {
     const data = value(null)
     watch(
       () => props.id,
-      async id => {
+      async (id) => {
         data.value = await fetchData(id)
       }
     )
     return {
-      data
+      data,
     }
-  }
+  },
 }
 ```
 
@@ -219,7 +221,7 @@ watch 可以直接观察一个包装对象：
 // double 是一个计算包装对象
 const double = computed(() => count.value * 2)
 
-watch(double, value => {
+watch(double, (value) => {
   console.log('double the count is: ', value)
 }) // -> double the count is: 0
 
@@ -279,18 +281,18 @@ const Ancestor = {
     // providing a value can make it reactive
     const count = value(0)
     provide({
-      [CountSymbol]: count
+      [CountSymbol]: count,
     }) // 生产者
-  }
+  },
 }
 
 const Descendent = {
   setup() {
     const count = inject(CountSymbol) // 消费者
     return {
-      count
+      count,
     }
-  }
+  },
 }
 ```
 
@@ -325,7 +327,7 @@ reactive 和 ref 的区别，一般用 ref 包装单个基本类型，比如 `co
 function useMousePosition() {
   const pos = reactive({
     x: 0,
-    y: 0
+    y: 0,
   })
 
   // ...
@@ -335,3 +337,26 @@ function useMousePosition() {
 // x 和 y 现在具备了响应式
 const { x, y } = useMousePosition()
 ```
+
+## Vue 3.0 Beta
+
+- [抄笔记：尤雨溪在 Vue3.0 Beta 直播里聊到了这些](https://juejin.im/post/5e9f6b3251882573a855cd52)
+- [Vue3 究竟好在哪里？（和 React Hook 的详细对比）](https://zhuanlan.zhihu.com/p/133819602)
+
+Highlights:
+
+- Performance
+- TreeShaking
+- Composition API
+- Fragment, Teleport (Portal), Suspense
+- TypeScript
+- Custom Render API
+
+### Performance
+
+1. PatchFlag (评论里说 React 里有对应的 EffectTag? 这是啥)
+1. cacheHandlers (对标 React 的 useCallback，但 Vue 3.0 会自动做这件事)
+
+### 新工具 vite
+
+一个简易的 http 服务器，无需 webpack 编译打包，根据请求的 Vue 文件，直接发回渲染，且支持热更新（非常快）。

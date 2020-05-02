@@ -1,16 +1,8 @@
 # Vue.js Study
 
-## Note
-
-1. [Vue Study Note](./note/vue-study-note.md)
-1. [Design+Code Vue Note](./vue-admin-dashboard/notes/vue-note.md)
-1. [Vue Misc](./note/vue-misc.md)
+Study note for vue.js
 
 ## Samples
-
-### step-by-step
-
-Follow the [Laracasts Video Tutorial - Learning Vue Step by Step](https://laracasts.com/series/learning-vue-step-by-step).
 
 ### vue-admin-dashboard
 
