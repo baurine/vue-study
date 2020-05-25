@@ -117,3 +117,75 @@ module.exports = {
 
 ## 4. 构建基础篇 3：env 文件与环境设置
 
+### 1. 配置文件
+
+```
+.env                # 在所有的环境中被载入
+.env.local          # 在所有的环境中被载入，但会被 git 忽略
+.env.[mode]         # 只在指定的模式中被载入
+.env.[mode].local   # 只在指定的模式中被载入，但会被 git 忽略
+```
+
+在 vue.config.js 中通过 `process.env.[name]` 访问。
+
+假如定义了 .env.stage env，如何在启动时加载这个 env 文件的内容呢，通过 `--mode stage` 参数，默认 mode 是 development：
+
+```
+"scripts": {
+    "serve": "vue-cli-service serve --mode stage",
+}
+```
+
+### 2. 环境注入
+
+环境变量除了来自 .env 文件外，webpack 还通过 DefinePlugin 内置插件将 process.env 注入到客户端代码中：
+
+```js
+// webpack 配置
+{
+    ...
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+            }
+        }),
+    ],
+    ...
+}
+```
+
+这种方式仅支持 `NODE_ENV`, `BASE_URL` 和 `VUE_APP_` 开头的变量。
+
+### 3. 额外配置
+
+在 vue.config.js 中使用 chainWebpack 直接注入或修改 DefinePlugin 中的值。
+
+```js
+/* vue.config.js */
+const configs = require('./config');
+// 用于做相应的 merge 处理
+const merge = require('webpack-merge');
+// 根据环境判断使用哪份配置
+const cfg = process.env.NODE_ENV === 'production' ? configs.build.env : configs.dev.env;
+
+module.exports = {
+    ...
+    chainWebpack: config => {
+        config.plugin('define')
+            .tap(args => {
+                let name = 'process.env';
+
+                // 使用 merge 保证原始值不变
+                args[0][name] = merge(args[0][name], cfg);
+
+                return args
+            })
+    },
+    ...
+}
+```
+
+### 4. 实际场景
+
+略。
