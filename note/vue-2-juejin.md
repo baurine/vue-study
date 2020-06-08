@@ -119,6 +119,8 @@ module.exports = {
 
 ### 1. 配置文件
 
+可以在根目录下创建不同形式的文件进行不同环境下变量的配置：
+
 ```
 .env                # 在所有的环境中被载入
 .env.local          # 在所有的环境中被载入，但会被 git 忽略
@@ -126,9 +128,16 @@ module.exports = {
 .env.[mode].local   # 只在指定的模式中被载入，但会被 git 忽略
 ```
 
-在 vue.config.js 中通过 `process.env.[name]` 访问。
+比如创建 `.env.stage` 文件，表明该文件只在 stage 环境下被加载：
 
-假如定义了 .env.stage env，如何在启动时加载这个 env 文件的内容呢，通过 `--mode stage` 参数，默认 mode 是 development：
+```
+NODE_ENV=stage
+VUE_APP_TITLE=this app is in stage mode
+```
+
+如何在 vue.config.js 访问到这些变量，通过 `process.env.[name]`，比如 `process.env.NODE_ENV`。
+
+如何在启动时决定加载哪个环境的变量，使用 `--mode` 参数：
 
 ```
 "scripts": {
@@ -136,14 +145,21 @@ module.exports = {
 }
 ```
 
+权重：
+
+```
+.env.[mode].local > .env.[mode] > .env.local > .env
+```
+
+注意：这些 env 文件中的环境变量在 vue.config.js 有效，并不一定在前端代码中生效。
+
 ### 2. 环境注入
 
-环境变量除了来自 .env 文件外，webpack 还通过 DefinePlugin 内置插件将 process.env 注入到客户端代码中：
+上面用 env 文件定义的环境变量并不一定在前端代码中生效。
 
-```js
-// webpack 配置
-{
-    ...
+webpack 通过 DefinePlugin 内置插件将 process.env 注入到前端代码中。
+
+```
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {
@@ -151,26 +167,27 @@ module.exports = {
             }
         }),
     ],
-    ...
-}
 ```
 
-这种方式仅支持 `NODE_ENV`, `BASE_URL` 和 `VUE_APP_` 开头的变量。
+vue-cli 3.x 封装的 webpack 配置自动完成了这个功能，但它仅会将 env 文件中定义的 VUE_APP_ 打头的变量，以及 NODE_ENV 注入到前端代码中，其余变量会过滤掉。
 
 ### 3. 额外配置
 
-在 vue.config.js 中使用 chainWebpack 直接注入或修改 DefinePlugin 中的值。
+在 vue.config.js 中通过代码动态定义，然后通过 DefinePlugin 手动动态注入。
 
-```js
+```
 /* vue.config.js */
 const configs = require('./config');
+
 // 用于做相应的 merge 处理
 const merge = require('webpack-merge');
+
 // 根据环境判断使用哪份配置
 const cfg = process.env.NODE_ENV === 'production' ? configs.build.env : configs.dev.env;
 
 module.exports = {
     ...
+
     chainWebpack: config => {
         config.plugin('define')
             .tap(args => {
@@ -182,6 +199,7 @@ module.exports = {
                 return args
             })
     },
+
     ...
 }
 ```
