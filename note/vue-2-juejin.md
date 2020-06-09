@@ -207,3 +207,29 @@ module.exports = {
 ### 4. 实际场景
 
 略。
+
+## 5. 构建实战篇 1：单页应用的基本配置
+
+### 1. 路由配置
+
+vue-router 采用配置式路由，可以使用 import 来动态引用组件来实现拆分代码，代码拆分默认命名为 2.js, 3.js 这种，如果想给它们命名，可以使用 webpack 提供的 magic comments:
+
+```
+const Home = () => import(/* webpackChunkName:'home'*/ './views/Home.vue');
+```
+
+### 2. Vuex 配置
+
+4 个核心点：state, mutations, actions, getters。
+
+按模块划分，每个模块下都有 state, mutations, actions, getters。
+
+### 3. 接口配置
+
+services 目录，封装 api 请求。
+
+在 vue.config.js 中配置 proxy 代理用于开发调式。
+
+### 4. 公共设施配置
+
+common 或 utils 目录，封装公共方法。
