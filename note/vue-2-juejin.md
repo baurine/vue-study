@@ -233,3 +233,58 @@ services 目录，封装 api 请求。
 ### 4. 公共设施配置
 
 common 或 utils 目录，封装公共方法。
+
+## 6. 构建实战篇 2：使用 pages 构建多页应用
+
+多页应用，多个 pages，每个 page 有独立的入口文件、组件、路由、vuex 等。
+
+目录结构：
+
+```
+├── node_modules               # 项目依赖包目录
+├── build                      # 项目 webpack 功能目录
+├── config                     # 项目配置项文件夹
+├── src                        # 前端资源目录
+│   ├── images                 # 图片目录
+│   ├── components             # 公共组件目录
+│   ├── pages                  # 页面目录
+│   │   ├── page1              # page1 目录
+│   │   │   ├── components     # page1 组件目录
+│   │   │   ├── router         # page1 路由目录
+│   │   │   ├── views          # page1 页面目录
+│   │   │   ├── page1.html     # page1 html 模板
+│   │   │   ├── page1.vue      # page1 vue 配置文件
+│   │   │   └── page1.js       # page1 入口文件
+│   │   ├── page2              # page2 目录
+│   │   └── index              # index 目录
+│   ├── common                 # 公共方法目录
+│   └── store                  # 状态管理 store 目录
+├── .gitignore                 # git 忽略文件
+├── .env                       # 全局环境配置文件
+├── .env.dev                   # 开发环境配置文件
+├── .postcssrc.js              # postcss 配置文件
+├── babel.config.js            # babel 配置文件
+├── package.json               # 包管理文件
+├── vue.config.js              # CLI 配置文件
+└── yarn.lock                  # yarn 依赖信息文件
+```
+
+多入口。在单页应用中，入口文件只有一个，cli 默认配置是 main.js (?? 不是 index.js)，多页应用则要在 webpack 的 entry 中配置多个入口：
+
+```js
+module.exports = {
+    ...
+    entry: {
+        page1: '/xxx/pages/page1/page1.js',
+        page2: '/xxx/pages/page2/page2.js',
+        index: '/xxx/pages/index/index.js',
+    },
+    ...
+}
+```
+
+可以借助 glob 库，封装一个工具方法来动态生成 entry。详略。
+
+多模板，添加多个 `new HtmlWebpackPlugin({...})`，同样可以用 glob 库封装工具函数来动态生成多个 `HtmlWebpackPlugin({...})`。详略。
+
+但实际 vue.config.js 提供了一个 pages 的配置属性来声明多页面，效果和上面手工方法是一样的，但也要自己写一些工具方法封装。详略。
