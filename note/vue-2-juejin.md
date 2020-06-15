@@ -169,7 +169,7 @@ webpack 通过 DefinePlugin 内置插件将 process.env 注入到前端代码中
     ],
 ```
 
-vue-cli 3.x 封装的 webpack 配置自动完成了这个功能，但它仅会将 env 文件中定义的 VUE_APP_ 打头的变量，以及 NODE_ENV 注入到前端代码中，其余变量会过滤掉。
+vue-cli 3.x 封装的 webpack 配置自动完成了这个功能，但它仅会将 env 文件中定义的 VUE*APP* 打头的变量，以及 NODE_ENV 注入到前端代码中，其余变量会过滤掉。
 
 ### 3. 额外配置
 
@@ -288,3 +288,115 @@ module.exports = {
 多模板，添加多个 `new HtmlWebpackPlugin({...})`，同样可以用 glob 库封装工具函数来动态生成多个 `HtmlWebpackPlugin({...})`。详略。
 
 但实际 vue.config.js 提供了一个 pages 的配置属性来声明多页面，效果和上面手工方法是一样的，但也要自己写一些工具方法封装。详略。
+
+## 7. 构建实战篇 3：多页路由与模板解析
+
+### 路由配置
+
+#### 1. 跳转
+
+多页应用中每个单页都是相互隔离的，所以跳转时不能再 router 提供的方法或组件进行跳转，而需要使用传统的 `<a>` tag 和 `location.href` 等方法。
+
+#### 2. 重定向
+
+光用上面的方法还不够 (试试 `location.reload()` 呢?)。
+
+还要对每个单页的路由首页进行重定向，比如：
+
+```
+/vue/page1 -> /vue/page1.html
+/vue/page2 -> /vue/page2.html
+```
+
+生产环境可以使用 nginx 或借助后端逻辑，开发时可以配置代理或 rewrite。
+
+```js
+/* vue.config.js */
+
+let baseUrl = '/vue/';
+
+module.exports = {
+    ...
+    devServer: {
+        historyApiFallback: {
+            rewrites: [
+                { from: new RegExp(baseUrl + 'page1'), to: baseUrl + 'page1.html' },
+                { from: new RegExp(baseUrl + 'page2'), to: baseUrl + 'page2.html' },
+            ]
+        }
+    }
+    ...
+}
+```
+
+### 模板配置
+
+#### 1. 模板渲染
+
+html-webpack-plugin 所使用的 html 模板支持模板语法，比如：
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>模板</title>
+    <% for (var chunk in htmlWebpackPlugin.files.css) { %> <%
+    if(htmlWebpackPlugin.files.css[chunk]) {%>
+    <link href="<%= htmlWebpackPlugin.files.css[chunk] %>" rel="stylesheet" />
+    <%}%> <% } %>
+  </head>
+  <body>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+
+    <% for (var chunk in htmlWebpackPlugin.files.js) { %> <%
+    if(htmlWebpackPlugin.files.js[chunk]) {%>
+    <script
+      type="text/javascript"
+      src="<%= htmlWebpackPlugin.files.js[chunk] %>"
+    ></script>
+    <%}%> <% } %>
+  </body>
+</html>
+```
+
+默认情况下 css / js 是自动注入的，并不需要我们手动注入。将 html-webpack-plugin 的参数中的 inject 设置为 false 可以关闭自动注入。
+
+(了解即可...)
+
+#### 2. 自定义配置
+
+上面的例子是为了铺垫一些其它需求，比如需要给不同的页面注入不同的逻辑，比如不同的页面需要注入不同的统计代码，就可以上面的模板语法。
+
+示例：
+
+```js
+/* vue.config.js */
+module.exports = {
+    ...
+    pages: utils.setPages({
+        addScript() {
+            if (process.env.NODE_ENV === 'production') {
+                return `
+                    <script src="https://s95.cnzz.com/z_stat.php?id=xxx&web_id=xxx" language="JavaScript"></script>
+                `
+            }
+            return ''
+        }
+    }),
+    ...
+}
+```
+
+在 html 模板：
+
+```html
+<% if(htmlWebpackPlugin.options.addScript){ %>
+    <%= htmlWebpackPlugin.options.addScript() %>
+<%}%>
+```
+
+可以给 `addScript()` 方法加上参数来区别不同的页面，从而实现不同的页面可以添加不同的脚本逻辑。
