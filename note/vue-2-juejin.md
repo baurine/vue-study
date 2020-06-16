@@ -393,10 +393,67 @@ module.exports = {
 
 在 html 模板：
 
-```html
+```
 <% if(htmlWebpackPlugin.options.addScript){ %>
     <%= htmlWebpackPlugin.options.addScript() %>
 <%}%>
 ```
 
 可以给 `addScript()` 方法加上参数来区别不同的页面，从而实现不同的页面可以添加不同的脚本逻辑。
+
+## 8. 构建实战篇 4：项目整合与优化
+
+### 使用 alias 简化路径
+
+(这个蛮实用的)
+
+可以将类似 `import HelloWorld from '../../../../HelloWorld.vue'` 简化写成 `import HelloWorld from '_com/HelloWorld.vue'`。
+
+在 vue.config.js 中的配置：
+
+```js
+/* vue.config.js */
+module.exports = {
+    ...
+    chainWebpack: config => {
+        config.resolve.alias
+            .set('@', resolve('src'))
+            .set('_lib', resolve('src/common'))
+            .set('_com', resolve('src/components'))
+            .set('_img', resolve('src/images'))
+            .set('_ser', resolve('src/services'))
+    },
+    ...
+}
+```
+
+在 css 中使用简写路径时，前面要加上 `~` 号，比如：
+
+```css
+.img {
+  background: (~_img/home.png);
+}
+```
+
+### 整合功能模块
+
+就是抽取相同方法到公共模块中...
+
+### 开启 Gzip 压缩
+
+略... (一般都不在前端干这事)
+
+(这小册写得有点乱，有点想弃了)
+
+## 9. 开发指南篇 1：从编码技巧与规范开始
+
+1. 使用对象代替 if 及 switch：算是小技巧吧，也不是很实用
+1. 使用 Array.from 快速生成数组
+1. 使用 router.beforeEach 来处理跳转前逻辑：修改路由跳转、设置 title、判断权限、启动进度...
+1. 使用 v-if 来优化页面加载
+1. 路由跳转尽量使用 name 而不是 path (有道理)
+1. 使用 key 来优化 v-for 循环
+1. 使用 computed 代替 watch
+1. 统一管理缓存变量
+1. 使用 setTimeout 代替 setInterval
+1. 不要使用 for in 循环来遍历数组
