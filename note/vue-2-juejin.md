@@ -457,3 +457,88 @@ module.exports = {
 1. 统一管理缓存变量
 1. 使用 setTimeout 代替 setInterval
 1. 不要使用 for in 循环来遍历数组
+
+## 10. 开发指南篇 2：学会编写可复用性模块
+
+1. 封装函数
+1. 封装组件
+1. 封装插件
+
+(这个小册可能对小白价值大一点...)
+
+## 11. 开发指南篇 3：合理划分容器组件与展示组件
+
+略。
+
+## 12. 开发指南篇 4：数据驱动与拼图游戏
+
+略。
+
+## 13. 开发指南篇 5：Vue API 盲点解析
+
+### 使用 performance 开启性能追踪
+
+```js
+if (process.env.NODE_ENV !== 'production') {
+  Vue.config.performance = true
+}
+```
+
+### 使用 errorHandler 来捕获异常
+
+vue 的全局 error handler.
+
+```js
+Vue.config.errorHandler = function (err, vm, info) {
+  let {
+    message, // 异常信息
+    name, // 异常名称
+    stack, // 异常堆栈信息
+  } = err
+  // vm 为抛出异常的 Vue 实例
+  // info 为 Vue 特定的错误信息，比如错误所在的生命周期钩子
+}
+```
+
+### 使用 nextTick 将回调延迟到下次 DOM 更新循环之后执行
+
+```js
+this.$nextTick(() => {
+  this.$refs.box.getElementsByTagName('li')[0].innerHTML = 'hello'
+})
+```
+
+### 使用 watch 的深度遍历和立即调用功能
+
+watch 的额外两个参数：
+
+- deep 设置为 true 用于监听对象内部值的变化
+- immediate 设置为 true 将立即以表达式的当前值触发回调
+
+### 对低开销的静态组件使用 v-once
+
+```
+<my-component v-once :data="msg"></my-component>
+```
+
+无论 msg 怎么变，只渲染 msg 第一次变化时的值。
+
+### 使用 `$isServer` 判断当前实例是否运行于服务器
+
+```js
+Object.defineProperty(Vue.prototype, '$isServer', {
+  get: isServerRendering,
+})
+
+var _isServer
+var isServerRendering = function () {
+  if (_isServer === undefined) {
+    if (!inBrowser && !inWeex && typeof global !== 'undefined') {
+      _isServer = global['process'].env.VUE_ENV === 'server'
+    } else {
+      _isServer = false
+    }
+  }
+  return _isServer
+}
+```
