@@ -1,6 +1,6 @@
 # 掘金小册《Vue 项目构建与开发入门》笔记
 
-(这个小册个人觉得写得一般)
+(个人觉得小册实际内容与题目有点不符...内容的深浅度没有组织好)
 
 ## 1. 开篇：Vue CLI 3 项目构建基础
 
@@ -542,3 +542,33 @@ var isServerRendering = function () {
   return _isServer
 }
 ```
+
+## 14. 开发拓展篇 1：扩充你的开发工具
+
+Chrome 插件：
+
+1. Vue.js devtools
+1. Vue Performance Devtool
+1. Postman
+1. [Web Developer](https://chrome.google.com/webstore/detail/web-developer/bfbameneiokkgbdmiekhjnmfkcnldhhm)：一款强大的用于操作网页中各项资源与浏览器的插件，比如一键禁用 JS、编辑 CSS、清除 Cookie 等。(貌似还实用)
+1. [Google PageSpeed Insights API Extension](https://chrome.google.com/webstore/detail/google-pagespeed-insights/hfebkooaidmeboeblkkejdoepilnnjhn)
+1. FeHelper：百度 FE 团队开发的一款前端工具集插件，包含代码压缩／性能检测／字符串编解码等功能，能够帮助我们完成一些琐碎的开发任务。
+1. Can I Use
+1. [JSONView](https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc) (这个一直在用)
+1. [WhatFont](https://chrome.google.com/webstore/detail/whatfont/jabopobgcpjmedljpbcaablpmlmfcogm)
+
+用 webpack-bundle-analyzer 分析打包文件。
+
+调试移动端页面：利用 Chrome/Safari 的远程调试，详略。
+
+## 15. 开发拓展篇 2：将 UI 界面交给第三方库
+
+UI 库：介绍了 Vux 库的使用
+
+图标库：IconFont
+
+## 16. 开发拓展篇 3：尝试使用外部数据
+
+使用开放 API。
+
+All Done!
